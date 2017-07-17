@@ -5,6 +5,14 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
 import java.net.Socket;
 
+/**
+ * @project netty_op
+ * @file ServiceTask.java 创建时间:2017年7月17日上午11:27:49
+ * @description 客户端请求的处理类
+ * @author dzn
+ * @version 1.0
+ *
+ */
 public class ServiceTask implements Runnable{
     private Socket socket;
     

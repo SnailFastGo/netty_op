@@ -4,6 +4,14 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
+/**
+ * @project netty_op
+ * @file RPCServerImpl.java 创建时间:2017年7月17日上午11:31:04
+ * @description 客户端请求的连接类
+ * @author dzn
+ * @version 1.0
+ *
+ */
 public class RPCServerImpl implements RPCServer{
     
     private boolean isRunning = false;
