@@ -1,6 +1,7 @@
 package com.netty.io;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -8,6 +9,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 /**
  * @project 服务器端启动类
@@ -42,9 +47,12 @@ public class TimeServer {
         EventLoopGroup workGroup = new NioEventLoopGroup();
         try{
             ServerBootstrap server = new ServerBootstrap();
-            server.group(bossGroup, workGroup).channel(NioServerSocketChannel.class)
-            .option(ChannelOption.SO_BACKLOG, 1024).childHandler(new ChildChannelHandler());
+            server.group(bossGroup, workGroup)
+                .channel(NioServerSocketChannel.class)
+                .option(ChannelOption.SO_BACKLOG, 1024)
+                .childHandler(new ChildChannelHandler());
             ChannelFuture cf = server.bind(port).sync();
+            System.out.println("服务器已启动, 监控端口号为 : " + port);
             cf.channel().closeFuture().sync();
         }finally{
             bossGroup.shutdownGracefully();
@@ -64,7 +72,18 @@ public class TimeServer {
         
         @Override
         protected void initChannel(SocketChannel ch) throws Exception {
+            //使用'\r\n'作为输入分隔符
+            ByteBuf byteBuf = Delimiters.lineDelimiter()[0];
+            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, byteBuf));
+            
+            //对输入数据进行字符串解码
+            ch.pipeline().addLast(new StringDecoder());
+            
+            //对输入数据进行业务逻辑处理
             ch.pipeline().addLast(new TimeServerHandler());
+            
+            //对输出数据进行字符串编码
+            ch.pipeline().addLast(new StringEncoder());
         }
         
     }

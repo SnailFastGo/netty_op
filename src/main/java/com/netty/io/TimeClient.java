@@ -1,6 +1,8 @@
 package com.netty.io;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -8,6 +10,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
+import io.netty.util.AttributeKey;
 
 /**
  * @project 客户单启动类
@@ -49,12 +56,36 @@ public class TimeClient {
                 
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
+                    //使用'\r\n'作为输入分隔符
+                    ByteBuf byteBuf = Delimiters.lineDelimiter()[0];
+                    ch.pipeline().addLast(new DelimiterBasedFrameDecoder(Integer.MAX_VALUE, byteBuf));
+                    
+                    //对输入数据进行字符串解码
+                    ch.pipeline().addLast(new StringDecoder());
+                    
+                    //对输入数据进行业务逻辑处理
                     ch.pipeline().addLast(new TimeClientHandler());
+                    
+                    //对输出数据进行字符串编码
+                    ch.pipeline().addLast(new StringEncoder());
                 }
                 
             });
+            
+            //连接服务器
             ChannelFuture future = boot.connect(host, port).sync();
+            
+            //向服务器发送数据
+            String name = "zhangsan\r\n" ;
+            Channel channel = future.channel();
+            channel.writeAndFlush(name);
+            
+            //等待客户端Channel关闭
             future.channel().closeFuture().sync();
+            
+            //获取客户端Channle的属性数据
+            Object result = channel.attr(AttributeKey.valueOf("mykey")).get();
+            System.out.println("读取到客户端Channel附加的属性-mykey, 属性值为 : " + result);
         }finally{
             group.shutdownGracefully();
         }
