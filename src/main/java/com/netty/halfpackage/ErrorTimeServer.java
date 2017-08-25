@@ -38,16 +38,24 @@ public class ErrorTimeServer {
      *@author dzn
      */
     public void bind(int port) throws InterruptedException{
+        //分配任务线程池
         EventLoopGroup bossGroup = new NioEventLoopGroup();
+        
+        //执行任务线程池
         EventLoopGroup workGroup = new NioEventLoopGroup();
         try{
+            //netty Server端
             ServerBootstrap server = new ServerBootstrap();
             server.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
                 .childHandler(new ChildChannelHandler());
+            
+            //启动netty服务器
             ChannelFuture cf = server.bind(port).sync();
             System.out.println("服务器已启动, 监控端口号为 : " + port);
+            
+            //等待服务器端关闭
             cf.channel().closeFuture().sync();
         }finally{
             bossGroup.shutdownGracefully();

@@ -41,6 +41,8 @@ public class ErrorTimeClient {
     public void connect(String host, int port) throws InterruptedException{
         EventLoopGroup group = new NioEventLoopGroup();
         try{
+            
+            //netty客户端
             Bootstrap boot = new Bootstrap();
             boot.group(group)
             .channel(NioSocketChannel.class)
@@ -55,7 +57,7 @@ public class ErrorTimeClient {
                 
             });
             
-            //连接服务器
+            //使用netty客户端连接netty服务器
             ChannelFuture future = boot.connect(host, port).sync();
             
             //等待客户端Channel关闭
