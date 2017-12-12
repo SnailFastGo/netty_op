@@ -41,5 +41,11 @@
 		<artifactId>hessian</artifactId>
 		<version>4.0.38</version>
 	</dependency>
+	<!-- jackson (support spring json) -->
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.13</version>
+	</dependency>
   </dependencies>
 </project>
