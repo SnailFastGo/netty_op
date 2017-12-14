@@ -47,5 +47,37 @@
 		<artifactId>jackson-mapper-asl</artifactId>
 		<version>1.9.13</version>
 	</dependency>
+	<!-- jetty (support jetty) -->
+	<dependency>
+		<groupId>org.eclipse.jetty</groupId>
+		<artifactId>jetty-server</artifactId>
+		<version>9.4.0.v20161208</version>
+	</dependency>
+	<!-- httpclient (support httpclient) -->
+	<dependency>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpclient</artifactId>
+   		 <version>4.5.2</version>
+	</dependency>
+	
+	<!-- log (support log) -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-api</artifactId>
+    	<version>1.7.25</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-log4j12</artifactId>
+	    <version>1.7.25</version>
+	    <scope>test</scope>
+	</dependency>
+	
+	<!-- spring (support spring) -->
+	<dependency>
+    	<groupId>org.springframework</groupId>
+    	<artifactId>spring-core</artifactId>
+    	<version>4.3.8.RELEASE</version>
+	</dependency>
   </dependencies>
 </project>
