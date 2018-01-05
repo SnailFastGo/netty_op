@@ -12,7 +12,7 @@ import io.netty.util.AttributeKey;
  * @version 1.0
  *
  */
-public class TimeClientHandler extends ChannelInboundHandlerAdapter{
+public class TimeClientInHandler extends ChannelInboundHandlerAdapter{
 
     /**
      *@description 接收服务器的响应数据

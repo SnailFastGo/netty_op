@@ -64,7 +64,12 @@ public class TimeClient {
                     ch.pipeline().addLast(new StringDecoder());
                     
                     //对输入数据进行业务逻辑处理
-                    ch.pipeline().addLast(new TimeClientHandler());
+                    ch.pipeline().addLast(new TimeClientInHandler3());
+                    ch.pipeline().addLast(new TimeClientInHandler2());
+                    ch.pipeline().addLast(new TimeClientInHandler());
+                    ch.pipeline().addLast(new TimeClientOutHandler3());
+                    ch.pipeline().addLast(new TimeClientOutHandler2());
+                    ch.pipeline().addLast(new TimeClientOutHandler());
                     
                     //对输出数据进行字符串编码
                     ch.pipeline().addLast(new StringEncoder());
