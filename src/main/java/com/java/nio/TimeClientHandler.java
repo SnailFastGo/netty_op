@@ -29,6 +29,7 @@ public class TimeClientHandler implements Runnable{
             this.selector = Selector.open();
             this.socketChannel = SocketChannel.open();
             this.socketChannel.configureBlocking(false);
+            NioWriterWrapper.getInstance().setSocketChannel(socketChannel);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -145,7 +146,7 @@ public class TimeClientHandler implements Runnable{
                    bb.get(bytes);
                    String body = new String(bytes, "UTF-8");
                    System.out.println("Now is " + body);
-                   this.stop = true;
+//                   this.stop = true;
                }else if(readBytes < 0){
                    key.cancel();
                    sc.close();

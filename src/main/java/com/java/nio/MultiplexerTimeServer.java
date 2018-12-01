@@ -21,7 +21,8 @@ public class MultiplexerTimeServer implements Runnable {
 
     public MultiplexerTimeServer(int port) {
         try {
-            //打开一个selector
+            //打开一个selector 在linux上如果要用EPoll, 需要在启动参数中添加如下配置
+            //Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.EPollSelectorProvider
             selector = Selector.open();
             
             //打开一个channel
